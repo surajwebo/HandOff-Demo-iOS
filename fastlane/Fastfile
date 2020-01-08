@@ -16,21 +16,10 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Description of what the lane does"
-#  lane :generate_ipa_develop do
-#    build_ios_app(
-#      configuration: "Debug",
-#      scheme: "Test",
-#      clean: true,
-#      export_method: 'development',
-#      output_name: "Handsoff_Demo_jenkins.ipa",
-#    )
-#  end
-
-lane :beta do
-  build_app(scheme: "HandsoffApp",
-            workspace: "HandsoffApp.xcodeproj",
-            include_bitcode: false)
-	    upload_to_testflight(skip_submission: true)
-end
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    increment_build_number(xcodeproj: "HandsoffApp.xcodeproj")
+    build_app(workspace: "HandsoffApp.xcworkspace", scheme: "HandsoffApp")
+    upload_to_testflight
+  end
 end
